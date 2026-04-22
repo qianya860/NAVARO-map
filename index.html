@@ -11,14 +11,13 @@
             margin: 0;
             padding: 0;
         }
-        /* 信息窗体样式优化 */
+        /* 信息窗体样式 */
         .custom-info {
             padding: 10px;
             background: #fff;
-            box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
             border-radius: 4px;
             font-family: "Microsoft YaHei", sans-serif;
-            min-width: 200px;
+            min-width: 220px;
         }
         .custom-info strong {
             color: #e83534;
@@ -34,6 +33,21 @@
             color: #666;
             line-height: 1.6;
         }
+        /* 导航按钮样式 */
+        .nav-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 12px;
+            background-color: #108ee9;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background-color: #0d73bd;
+        }
     </style>
 </head>
 <body>
@@ -41,52 +55,27 @@
     <div id="container"></div>
 
     <script type="text/javascript">
-        // 高德地图安全密钥配置
         window._AMapSecurityConfig = {
             securityJsCode: '68a5bab4875a8c832cdc0d5597aca5f3', 
         }
     </script>
-
     <script src="https://webapi.amap.com/maps?v=2.0&key=7639ee5e15dcd7d785e584f831c2d048"></script>
 
     <script>
-        // 初始化地图
         var map = new AMap.Map('container', {
             zoom: 5,
             center: [110.00, 30.00],
             viewMode: '2D'
         });
 
-        // 展厅数据
         var storeData = [
-            {
-                name: "NOVARO展厅（常州）",
-                position: [120.111262, 31.726854],
-                address: "江苏省常州市武进区横林崔桥崔北工业区梅巷路12号"
-            },
-            {
-                name: "NOVARO展厅（广东佛山）",
-                position: [113.000501, 23.121306],
-                address: "广东省佛山市南海区狮山镇博爱中路69号京东数字产业园659"
-            },
-            {
-                name: "NOVARO展厅（临沂）",
-                position: [118.221942, 35.099386],
-                address: "山东省临沂市兰山区创业路1088号5号楼"
-            },
-            {
-                name: "NOVARO展厅（成都）",
-                position: [103.697688, 30.632958],
-                address: "四川省成都市崇州市崇阳街道崇阳大道1号四川智能大厦"
-            },
-            {
-                name: "NOVARO展厅（广东肇庆）",
-                position: [112.827725, 23.228665],
-                address: "广东省肇庆市四会市大沙镇南江工业园工业大道21号"
-            }
+            { name: "NOVARO展厅（常州）", position: [120.111262, 31.726854], address: "江苏省常州市武进区横林崔桥崔北工业区梅巷路12号" },
+            { name: "NOVARO展厅（广东佛山）", position: [113.000501, 23.121306], address: "广东省佛山市南海区狮山镇博爱中路69号京东数字产业园659" },
+            { name: "NOVARO展厅（临沂）", position: [118.221942, 35.099386], address: "山东省临沂市兰山区创业路1088号5号楼" },
+            { name: "NOVARO展厅（成都）", position: [103.697688, 30.632958], address: "四川省成都市崇州市崇阳街道崇阳大道1号四川智能大厦" },
+            { name: "NOVARO展厅（广东肇庆）", position: [112.827725, 23.228665], address: "广东省肇庆市四会市大沙镇南江工业园工业大道21号" }
         ];
 
-        // 批量添加标记
         storeData.forEach(function(store) {
             var marker = new AMap.Marker({
                 position: store.position,
@@ -94,12 +83,16 @@
                 map: map
             });
 
-            // 点击弹出信息窗体
             marker.on('click', function() {
+                // 构建导航链接：跳转到高德地图规划路径
+                // t=0表示驾车模式，也可以选t=2(公交)或t=4(步行)
+                var navUrl = `https://uri.amap.com/navigation?to=${store.position[0]},${store.position[1]},${store.name}&mode=car&policy=1&src=mypage&coordinate=gcj02&callnative=1`;
+
                 var infoContent = `
                     <div class="custom-info">
                         <strong>${store.name}</strong>
-                        <p><b>地址：</b>${store.address}</p>
+                        <p>地址：${store.address}</p>
+                        <a class="nav-btn" href="${navUrl}" target="_blank">直接导航 (去这里)</a>
                     </div>`;
                 
                 var infoWindow = new AMap.InfoWindow({
@@ -110,13 +103,10 @@
             });
         });
 
-        // 自动调整视野，显示所有标记点
         map.setFitView();
 
-        // 添加地图控件
-        AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function(){
+        AMap.plugin(['AMap.ToolBar'], function(){
             map.addControl(new AMap.ToolBar());
-            map.addControl(new AMap.Scale());
         });
     </script>
 </body>
