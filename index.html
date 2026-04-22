@@ -21,14 +21,13 @@
             color: var(--novaro-black);
         }
 
-        /* 第一层：纯净背景图 + 居中Logo */
+        /* 第一层：PC端背景图设置 */
         .brand-hero {
             position: relative;
-            /* 背景效果图，增加轻微暗色滤镜提升Logo质感 */
             background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('hero-image.jpg'); 
             background-size: cover;
             background-position: center;
-            height: 400px; 
+            height: 400px; /* PC端保持大气的高度 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,17 +35,11 @@
         }
 
         .brand-logo-img {
-            /* 修改此处调节Logo在图中的大小 */
             width: 300px; 
             height: auto;
             z-index: 2;
-            /* 增加一个细微的阴影让Logo从背景中跳出来 */
             filter: drop-shadow(0 2px 15px rgba(0,0,0,0.2));
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
-        .brand-hero:hover .brand-logo-img {
-            transform: scale(1.03);
         }
 
         /* 第二层：省份筛选（黑色点睛条） */
@@ -59,8 +52,11 @@
             justify-content: center;
             overflow-x: auto;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            -webkit-overflow-scrolling: touch;
+            /* 隐藏滚动条但保持可滑动 */
+            scrollbar-width: none; 
         }
+        .nav-filter::-webkit-scrollbar { display: none; }
+
         .province-link {
             padding: 18px 25px;
             color: var(--novaro-grey);
@@ -71,7 +67,6 @@
             letter-spacing: 2px;
             white-space: nowrap;
         }
-        .province-link:hover { color: var(--pure-white); }
         .province-link.active {
             color: var(--pure-white);
             background: rgba(255,255,255,0.05);
@@ -81,7 +76,7 @@
         /* 第三层：展厅列表 */
         .main-content {
             max-width: 900px;
-            margin: 40px auto;
+            margin: 30px auto;
             padding: 0 20px;
         }
         .list-header {
@@ -91,39 +86,24 @@
             padding-left: 10px;
             border-left: 2px solid var(--novaro-red);
             letter-spacing: 1px;
-            text-transform: uppercase;
         }
         .showroom-card {
             background: var(--pure-white);
             margin-bottom: 20px;
-            padding: 40px;
+            padding: 35px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid #e0e0e0;
-            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: 0.4s;
         }
-        .showroom-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
-        .info-box h2 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--novaro-black);
-        }
-        .info-box p {
-            margin: 12px 0 0;
-            font-size: 14px;
-            color: var(--novaro-grey);
-            line-height: 1.6;
-        }
+        .info-box h2 { margin: 0; font-size: 18px; font-weight: 500; }
+        .info-box p { margin: 10px 0 0; font-size: 13px; color: var(--novaro-grey); line-height: 1.6; }
 
         /* 红色行动按钮 */
         .action-area { display: flex; flex-direction: column; gap: 12px; }
         .btn {
-            min-width: 140px; padding: 14px 0; font-size: 12px;
+            min-width: 130px; padding: 12px 0; font-size: 12px;
             text-align: center; text-decoration: none; letter-spacing: 2px;
             cursor: pointer; transition: 0.3s;
         }
@@ -132,24 +112,46 @@
             color: var(--pure-white);
             border: 1px solid var(--novaro-red);
         }
-        .btn-red:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(232, 54, 52, 0.3); }
-        
         .btn-outline {
             background: transparent; color: var(--novaro-grey);
             border: 1px solid var(--novaro-grey);
         }
-        .btn-outline:hover { border-color: var(--novaro-black); color: var(--novaro-black); }
 
         /* 地图区 */
-        #map-container { height: 500px; background: #eee; margin-top: 50px; border: 1px solid #ddd; }
+        #map-container { height: 400px; background: #eee; margin: 40px 0; border: 1px solid #ddd; }
 
+        /* ============================================= */
+        /* 【核心修改：移动端专项适配】 */
         @media (max-width: 768px) {
-            .brand-hero { height: 280px; }
-            .brand-logo-img { width: 200px; }
-            .showroom-card { flex-direction: column; text-align: center; padding: 30px 20px; }
-            .action-area { width: 100%; margin-top: 25px; }
-            .nav-filter { justify-content: flex-start; } 
+            .brand-hero { 
+                height: 180px; /* 大幅降低移动端图片高度 */
+            }
+            .brand-logo-img { 
+                width: 160px; /* 相应缩小Logo */
+            }
+            .nav-filter { 
+                justify-content: flex-start; /* 允许横向滑动选择省份 */
+                padding: 0 10px;
+            }
+            .province-link {
+                padding: 15px 18px; /* 缩小间距 */
+                font-size: 12px;
+            }
+            .showroom-card { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 25px 20px; 
+            }
+            .action-area { 
+                width: 100%; 
+                margin-top: 20px; 
+            }
+            .btn {
+                width: 100%; /* 按钮在手机端撑满 */
+            }
         }
+        /* ============================================= */
+
     </style>
 </head>
 <body>
