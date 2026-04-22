@@ -7,9 +7,9 @@
     <style>
         /* 品牌色彩规范 */
         :root {
-            --novaro-red: rgb(232, 54, 52);    /* 主题色 */
-            --novaro-black: rgb(25, 25, 25);   /* 点睛/文字 */
-            --novaro-grey: rgb(137, 137, 137); /* 辅助色 */
+            --novaro-red: rgb(232, 54, 52);
+            --novaro-black: rgb(25, 25, 25);
+            --novaro-grey: rgb(137, 137, 137);
             --pure-white: #ffffff;
             --bg-body: #f4f4f4;
         }
@@ -21,27 +21,35 @@
             color: var(--novaro-black);
         }
 
-        /* 第一层：品牌沉浸区 - 方案一：小巧 Logo 风格 */
+        /* 第一层：纯净背景图 + 居中Logo */
         .brand-hero {
-            background-color: var(--novaro-red); 
-            /* 确保图片文件名与此一致 */
-            background-image: url('logo-banner.png'); 
-            background-repeat: no-repeat;
-            background-position: center center;
-            
-            /* 【核心调节点】控制Logo大小，数值越小越精致 */
-            background-size: 30%; 
-            
-            /* 【核心调节点】控制红色区域整体高度 */
-            height: 180px; 
-            
-            padding: 0; 
+            position: relative;
+            /* 背景效果图，增加轻微暗色滤镜提升Logo质感 */
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('hero-image.jpg'); 
+            background-size: cover;
+            background-position: center;
+            height: 400px; 
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
-        /* 第二层：省份筛选（深黑点睛） */
+        .brand-logo-img {
+            /* 修改此处调节Logo在图中的大小 */
+            width: 300px; 
+            height: auto;
+            z-index: 2;
+            /* 增加一个细微的阴影让Logo从背景中跳出来 */
+            filter: drop-shadow(0 2px 15px rgba(0,0,0,0.2));
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .brand-hero:hover .brand-logo-img {
+            transform: scale(1.03);
+        }
+
+        /* 第二层：省份筛选（黑色点睛条） */
         .nav-filter {
             background: var(--novaro-black);
             position: sticky;
@@ -51,7 +59,7 @@
             justify-content: center;
             overflow-x: auto;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            -webkit-overflow-scrolling: touch; /* 增强手机端滚动顺滑度 */
+            -webkit-overflow-scrolling: touch;
         }
         .province-link {
             padding: 18px 25px;
@@ -70,7 +78,7 @@
             font-weight: 600;
         }
 
-        /* 第三层：展厅卡片列表 */
+        /* 第三层：展厅列表 */
         .main-content {
             max-width: 900px;
             margin: 40px auto;
@@ -83,6 +91,7 @@
             padding-left: 10px;
             border-left: 2px solid var(--novaro-red);
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .showroom-card {
             background: var(--pure-white);
@@ -111,55 +120,32 @@
             line-height: 1.6;
         }
 
-        /* 按钮组 */
-        .action-area {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        /* 红色行动按钮 */
+        .action-area { display: flex; flex-direction: column; gap: 12px; }
         .btn {
-            min-width: 130px;
-            padding: 12px 0;
-            font-size: 12px;
-            text-align: center;
-            text-decoration: none;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
+            min-width: 140px; padding: 14px 0; font-size: 12px;
+            text-align: center; text-decoration: none; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s;
         }
-        .btn-black {
-            background: var(--novaro-black);
+        .btn-red {
+            background: var(--novaro-red);
             color: var(--pure-white);
-            border: 1px solid var(--novaro-black);
+            border: 1px solid var(--novaro-red);
         }
-        .btn-black:hover {
-            background: transparent;
-            color: var(--novaro-black);
-        }
-        .btn-grey {
-            background: transparent;
-            color: var(--novaro-grey);
+        .btn-red:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(232, 54, 52, 0.3); }
+        
+        .btn-outline {
+            background: transparent; color: var(--novaro-grey);
             border: 1px solid var(--novaro-grey);
         }
-        .btn-grey:hover {
-            border-color: var(--novaro-red);
-            color: var(--novaro-red);
-        }
+        .btn-outline:hover { border-color: var(--novaro-black); color: var(--novaro-black); }
 
         /* 地图区 */
-        #map-container {
-            height: 500px;
-            background: #eee;
-            margin-top: 50px;
-            border: 1px solid #ddd;
-        }
+        #map-container { height: 500px; background: #eee; margin-top: 50px; border: 1px solid #ddd; }
 
-        /* 响应式适配 */
         @media (max-width: 768px) {
-            .brand-hero {
-                height: 120px; /* 手机端容器变矮 */
-                background-size: 60%; /* 手机端Logo占比大一点，方便看清 */
-            }
+            .brand-hero { height: 280px; }
+            .brand-logo-img { width: 200px; }
             .showroom-card { flex-direction: column; text-align: center; padding: 30px 20px; }
             .action-area { width: 100%; margin-top: 25px; }
             .nav-filter { justify-content: flex-start; } 
@@ -169,7 +155,7 @@
 <body>
 
     <header class="brand-hero">
-        <span style="display:none;">NOVARO 诺伽 - 高端生态家具品牌</span>
+        <img src="logo-banner.png" alt="NOVARO" class="brand-logo-img">
     </header>
 
     <nav class="nav-filter">
@@ -182,9 +168,7 @@
 
     <div class="main-content">
         <div class="list-header" id="current-category">SHOWROOMS / 全部展厅</div>
-        
         <div id="showroom-list"></div>
-
         <div id="map-container"></div>
     </div>
 
@@ -203,18 +187,14 @@
         ];
 
         let amap = new AMap.Map('map-container', { 
-            zoom: 4, 
-            center: [108.95, 34.27],
-            mapStyle: 'amap://styles/light' 
+            zoom: 4, center: [108.95, 34.27], mapStyle: 'amap://styles/light' 
         });
 
         function filterShowroom(prov, el) {
             document.querySelectorAll('.province-link').forEach(l => l.classList.remove('active'));
             el.classList.add('active');
             document.getElementById('current-category').innerText = `SHOWROOMS / ${prov}展厅`;
-
             const list = prov === '全部' ? data : data.filter(d => d.prov === prov);
-            
             const html = list.map(item => `
                 <div class="showroom-card">
                     <div class="info-box">
@@ -222,13 +202,12 @@
                         <p>${item.addr}</p>
                     </div>
                     <div class="action-area">
-                        <a class="btn btn-black" href="https://uri.amap.com/navigation?to=${item.pos[0]},${item.pos[1]},${item.name}&mode=car&callnative=1" target="_blank">立即导航</a>
-                        <div class="btn btn-grey" onclick="focusMap([${item.pos}], '${item.name}')">查看位置</div>
+                        <a class="btn btn-red" href="https://uri.amap.com/navigation?to=${item.pos[0]},${item.pos[1]},${item.name}&mode=car&callnative=1" target="_blank">立即导航</a>
+                        <div class="btn btn-outline" onclick="focusMap([${item.pos}], '${item.name}')">查看位置</div>
                     </div>
                 </div>
             `).join('');
             document.getElementById('showroom-list').innerHTML = html;
-
             amap.clearMap();
             list.forEach(item => {
                 const marker = new AMap.Marker({ position: item.pos, map: amap });
@@ -246,7 +225,6 @@
             });
             info.open(amap, pos);
         }
-
         filterShowroom('全部', document.querySelector('.province-link'));
     </script>
 </body>
