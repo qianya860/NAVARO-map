@@ -3,111 +3,251 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>NOVARO诺伽 - 全国展厅分布</title>
+    <title>NOVARO诺伽 | 高端生态家具品牌</title>
     <style>
-        html, body, #container {
-            width: 100%;
-            height: 100%;
+        /* 品牌色彩规范 */
+        :root {
+            --novaro-red: rgb(232, 54, 52);    /* 主题色 */
+            --novaro-black: rgb(25, 25, 25);   /* 点睛/文字 */
+            --novaro-grey: rgb(137, 137, 137); /* 辅助色 */
+            --pure-white: #ffffff;
+            --bg-body: #f4f4f4;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", sans-serif; 
+            background: var(--bg-body); 
+            color: var(--novaro-black);
+        }
+
+        /* 第一层：品牌沉浸区 - 方案一：小巧 Logo 风格 */
+        .brand-hero {
+            background-color: var(--novaro-red); 
+            /* 确保图片文件名与此一致 */
+            background-image: url('logo-banner.png'); 
+            background-repeat: no-repeat;
+            background-position: center center;
+            
+            /* 【核心调节点】控制Logo大小，数值越小越精致 */
+            background-size: 30%; 
+            
+            /* 【核心调节点】控制红色区域整体高度 */
+            height: 180px; 
+            
+            padding: 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 第二层：省份筛选（深黑点睛） */
+        .nav-filter {
+            background: var(--novaro-black);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            -webkit-overflow-scrolling: touch; /* 增强手机端滚动顺滑度 */
+        }
+        .province-link {
+            padding: 18px 25px;
+            color: var(--novaro-grey);
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+        .province-link:hover { color: var(--pure-white); }
+        .province-link.active {
+            color: var(--pure-white);
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+        }
+
+        /* 第三层：展厅卡片列表 */
+        .main-content {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .list-header {
+            font-size: 11px;
+            color: var(--novaro-grey);
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 2px solid var(--novaro-red);
+            letter-spacing: 1px;
+        }
+        .showroom-card {
+            background: var(--pure-white);
+            margin-bottom: 20px;
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .showroom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        .info-box h2 {
             margin: 0;
-            padding: 0;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--novaro-black);
         }
-        /* 信息窗体样式 */
-        .custom-info {
-            padding: 10px;
-            background: #fff;
-            border-radius: 4px;
-            font-family: "Microsoft YaHei", sans-serif;
-            min-width: 220px;
-        }
-        .custom-info strong {
-            color: #e83534;
-            font-size: 15px;
-            display: block;
-            margin-bottom: 5px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        .custom-info p {
-            margin: 5px 0;
-            font-size: 12px;
-            color: #666;
+        .info-box p {
+            margin: 12px 0 0;
+            font-size: 14px;
+            color: var(--novaro-grey);
             line-height: 1.6;
         }
-        /* 导航按钮样式 */
-        .nav-btn {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 5px 12px;
-            background-color: #108ee9;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 3px;
-            font-size: 12px;
-            cursor: pointer;
+
+        /* 按钮组 */
+        .action-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-        .nav-btn:hover {
-            background-color: #0d73bd;
+        .btn {
+            min-width: 130px;
+            padding: 12px 0;
+            font-size: 12px;
+            text-align: center;
+            text-decoration: none;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-black {
+            background: var(--novaro-black);
+            color: var(--pure-white);
+            border: 1px solid var(--novaro-black);
+        }
+        .btn-black:hover {
+            background: transparent;
+            color: var(--novaro-black);
+        }
+        .btn-grey {
+            background: transparent;
+            color: var(--novaro-grey);
+            border: 1px solid var(--novaro-grey);
+        }
+        .btn-grey:hover {
+            border-color: var(--novaro-red);
+            color: var(--novaro-red);
+        }
+
+        /* 地图区 */
+        #map-container {
+            height: 500px;
+            background: #eee;
+            margin-top: 50px;
+            border: 1px solid #ddd;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .brand-hero {
+                height: 120px; /* 手机端容器变矮 */
+                background-size: 60%; /* 手机端Logo占比大一点，方便看清 */
+            }
+            .showroom-card { flex-direction: column; text-align: center; padding: 30px 20px; }
+            .action-area { width: 100%; margin-top: 25px; }
+            .nav-filter { justify-content: flex-start; } 
         }
     </style>
 </head>
 <body>
 
-    <div id="container"></div>
+    <header class="brand-hero">
+        <span style="display:none;">NOVARO 诺伽 - 高端生态家具品牌</span>
+    </header>
+
+    <nav class="nav-filter">
+        <div class="province-link active" onclick="filterShowroom('全部', this)">全部展厅</div>
+        <div class="province-link" onclick="filterShowroom('江苏', this)">江苏</div>
+        <div class="province-link" onclick="filterShowroom('广东', this)">广东</div>
+        <div class="province-link" onclick="filterShowroom('山东', this)">山东</div>
+        <div class="province-link" onclick="filterShowroom('四川', this)">四川</div>
+    </nav>
+
+    <div class="main-content">
+        <div class="list-header" id="current-category">SHOWROOMS / 全部展厅</div>
+        
+        <div id="showroom-list"></div>
+
+        <div id="map-container"></div>
+    </div>
 
     <script type="text/javascript">
-        window._AMapSecurityConfig = {
-            securityJsCode: '68a5bab4875a8c832cdc0d5597aca5f3', 
-        }
+        window._AMapSecurityConfig = { securityJsCode: '68a5bab4875a8c832cdc0d5597aca5f3' };
     </script>
     <script src="https://webapi.amap.com/maps?v=2.0&key=7639ee5e15dcd7d785e584f831c2d048"></script>
 
     <script>
-        var map = new AMap.Map('container', {
-            zoom: 5,
-            center: [110.00, 30.00],
-            viewMode: '2D'
-        });
-
-        var storeData = [
-            { name: "NOVARO展厅（常州）", position: [120.111262, 31.726854], address: "江苏省常州市武进区横林崔桥崔北工业区梅巷路12号" },
-            { name: "NOVARO展厅（广东佛山）", position: [113.000501, 23.121306], address: "广东省佛山市南海区狮山镇博爱中路69号京东数字产业园659" },
-            { name: "NOVARO展厅（临沂）", position: [118.221942, 35.099386], address: "山东省临沂市兰山区创业路1088号5号楼" },
-            { name: "NOVARO展厅（成都）", position: [103.697688, 30.632958], address: "四川省成都市崇州市崇阳街道崇阳大道1号四川智能大厦" },
-            { name: "NOVARO展厅（广东肇庆）", position: [112.827725, 23.228665], address: "广东省肇庆市四会市大沙镇南江工业园工业大道21号" }
+        const data = [
+            { prov: "江苏", name: "NOVARO展厅 · 常州", pos: [120.111262, 31.726854], addr: "江苏省常州市武进区横林崔桥崔北工业区梅巷路12号" },
+            { prov: "广东", name: "NOVARO展厅 · 佛山", pos: [113.000501, 23.121306], addr: "广东省佛山市南海区狮山镇博爱中路69号京东数字产业园659" },
+            { prov: "山东", name: "NOVARO展厅 · 临沂", pos: [118.221942, 35.099386], addr: "山东省临沂市兰山区创业路1088号5号楼" },
+            { prov: "四川", name: "NOVARO展厅 · 成都", pos: [103.697688, 30.632958], addr: "四川省成都市崇州市崇阳街道崇阳大道1号四川智能大厦" },
+            { prov: "广东", name: "NOVARO展厅 · 肇庆", pos: [112.827725, 23.228665], addr: "广东省肇庆市四会市大沙镇南江工业园工业大道21号" }
         ];
 
-        storeData.forEach(function(store) {
-            var marker = new AMap.Marker({
-                position: store.position,
-                title: store.name,
-                map: map
-            });
-
-            marker.on('click', function() {
-                // 构建导航链接：跳转到高德地图规划路径
-                // t=0表示驾车模式，也可以选t=2(公交)或t=4(步行)
-                var navUrl = `https://uri.amap.com/navigation?to=${store.position[0]},${store.position[1]},${store.name}&mode=car&policy=1&src=mypage&coordinate=gcj02&callnative=1`;
-
-                var infoContent = `
-                    <div class="custom-info">
-                        <strong>${store.name}</strong>
-                        <p>地址：${store.address}</p>
-                        <a class="nav-btn" href="${navUrl}" target="_blank">直接导航 (去这里)</a>
-                    </div>`;
-                
-                var infoWindow = new AMap.InfoWindow({
-                    content: infoContent,
-                    offset: new AMap.Pixel(0, -30)
-                });
-                infoWindow.open(map, marker.getPosition());
-            });
+        let amap = new AMap.Map('map-container', { 
+            zoom: 4, 
+            center: [108.95, 34.27],
+            mapStyle: 'amap://styles/light' 
         });
 
-        map.setFitView();
+        function filterShowroom(prov, el) {
+            document.querySelectorAll('.province-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('current-category').innerText = `SHOWROOMS / ${prov}展厅`;
 
-        AMap.plugin(['AMap.ToolBar'], function(){
-            map.addControl(new AMap.ToolBar());
-        });
+            const list = prov === '全部' ? data : data.filter(d => d.prov === prov);
+            
+            const html = list.map(item => `
+                <div class="showroom-card">
+                    <div class="info-box">
+                        <h2>${item.name}</h2>
+                        <p>${item.addr}</p>
+                    </div>
+                    <div class="action-area">
+                        <a class="btn btn-black" href="https://uri.amap.com/navigation?to=${item.pos[0]},${item.pos[1]},${item.name}&mode=car&callnative=1" target="_blank">立即导航</a>
+                        <div class="btn btn-grey" onclick="focusMap([${item.pos}], '${item.name}')">查看位置</div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('showroom-list').innerHTML = html;
+
+            amap.clearMap();
+            list.forEach(item => {
+                const marker = new AMap.Marker({ position: item.pos, map: amap });
+                marker.on('click', () => focusMap(item.pos, item.name));
+            });
+            amap.setFitView();
+        }
+
+        function focusMap(pos, name) {
+            document.getElementById('map-container').scrollIntoView({ behavior: 'smooth' });
+            amap.setZoomAndCenter(15, pos);
+            const info = new AMap.InfoWindow({ 
+                content: `<div style="padding:10px; font-size:12px; color:var(--novaro-black)"><b>${name}</b></div>`,
+                offset: new AMap.Pixel(0, -30)
+            });
+            info.open(amap, pos);
+        }
+
+        filterShowroom('全部', document.querySelector('.province-link'));
     </script>
 </body>
 </html>
